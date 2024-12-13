@@ -123,15 +123,6 @@ class Exp():
         '''
         elements = range(input_length)
         numRepeats = round(p*size)
-
-        result = []
-        # Ensure that there are no unintended repetitions
-        for i in range(size):
-            available_elems = [elem for elem in elements if i < n or result[i - n] != elements]
-            if not available_elems:
-                raise ValueError("Not enough elements to satisfy the non-repeating condition.")
-            result.append(random.choice(available_elems))
-
         result = np.zeros(size) - 1
 
         #Randomly generate the locations which will have repeated elements
@@ -305,7 +296,6 @@ class EquilateralTriangle:
         glPopMatrix()  # Restore the transformation matrix
 
 
-
 def drawPracticeRectangle(space_pressed, stim_correct, CorrectRectangle):
     if space_pressed and stim_correct:
         CorrectRectangle.set_color([0,255,0])
@@ -315,7 +305,8 @@ def drawPracticeRectangle(space_pressed, stim_correct, CorrectRectangle):
         CorrectRectangle.draw()
 
 
-#some testing
+
+# #some testing
 # def makeNback2(elements, size, n, p):
 #     '''
 #     INPUT PARAMETERS
@@ -330,14 +321,6 @@ def drawPracticeRectangle(space_pressed, stim_correct, CorrectRectangle):
 #     repeatLocs: list of length size. Equals 1 at locations where a repetition will occur
 #     '''
 #     numRepeats = round(p*size)
-
-#     result = []
-#     # Ensure that there are no unintended repetitions
-#     for i in range(size):
-#         available_elems = [elem for elem in elements if i < n or result[i - n] != elements]
-#         if not available_elems:
-#             raise ValueError("Not enough elements to satisfy the non-repeating condition.")
-#         result.append(random.choice(available_elems))
 
 #     result = np.zeros(size) - 1
 
@@ -368,11 +351,18 @@ def drawPracticeRectangle(space_pressed, stim_correct, CorrectRectangle):
 #     return result, repeatLocsEnd
 
 # a = range(9)
-# n = 3
+# n = 1
 # p = 0.2
-# size = 20
-
+# size = 10
+# num_trials = 1000000
+# mean_repeats = 0
 # result, locs = makeNback2(a, size, n, p)
 
+# for i in range(num_trials):
+#     num_repeats = 0
+#     for j in range(size-n):
+#         if result[j] == result[j+n]: num_repeats += 1
+#     mean_repeats += num_repeats
 # print(result)
 # print(locs)
+# print(mean_repeats / num_trials / size)
