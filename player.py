@@ -16,7 +16,7 @@ from tachypy import (
 from generator import *
 exp = Exp(subj_ID = 1, n_list = [1,2], num_rounds = 10, proportion_repeats = 0.22, 
     im_h=300, im_w=300, stim_interval=2, stim_duration=0.5)
-practice = 1
+practice = 1 #For practice mode, there will be feeback
 
 #Note: We compensate for algorithm by using p = 0.22 instead of 0.2
 
