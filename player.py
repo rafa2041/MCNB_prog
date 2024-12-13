@@ -161,7 +161,9 @@ for variation in variation_list: #Loop over letters and shapes
 
             exp.fullData[f'responses_{variation}s'][j,round] = space_pressed
                 
-            
+
+                
+response_handler.get_events()
 screen.fill([128, 128, 128])
 goodbye_message = Text('Experiment finished! Press the space bar to quit', dest_rect=dest_rect, font_name='Helvetica', font_size=24, color=(0, 0, 0))
 goodbye_message.draw()
