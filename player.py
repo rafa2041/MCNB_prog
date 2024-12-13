@@ -20,7 +20,7 @@ practice = 1 #For practice mode, there will be feeback as to whether the respons
 #For the real experiment,  n_list = [1,2,3], num_rounds = 50
 from generator import *
 exp = Exp(subj_ID = 1, n_list = [1,2], num_rounds = 10, proportion_repeats = 0.22, 
-    im_h=300, im_w=300, stim_interval=2, stim_duration=0.5)
+    im_h=300, im_w=600, stim_interval=2, stim_duration=0.5)
 
 ### CONVERT S TO NS FOR TIMING
 stim_interval_ns = exp.stim_interval*1e9
@@ -139,6 +139,8 @@ for variation in variation_list: #Loop over letters and shapes
                 true_time = screen.flip()
 
                 response_handler.get_events()
+                if response_handler.is_key_down('escape'):
+                    exit()
                 if response_handler.is_key_down('space') and not space_pressed:
                     space_pressed = 1
 
@@ -150,6 +152,8 @@ for variation in variation_list: #Loop over letters and shapes
                 if practice: drawPracticeRectangle(space_pressed, exp.stim_locs[round], CorrectRectangle)
                 
                 response_handler.get_events()
+                if response_handler.is_key_down('escape'):
+                    exit()
                 if response_handler.is_key_down('space') and not space_pressed:
                     space_pressed = 1
 
