@@ -11,10 +11,10 @@ from tachypy import (
     Rectangle,
 )
 
-### INITIALIZE THE EXPERIMENT (THE IDEA IS THAT ONCE THE CODE RUNS YOU WILL ONLY EVER CHANGE THIS LINE
-### TO CHANGE THE SUBJECT ID, EXPERIMENT PARAMETERS, ETC)
+### INITIALIZE THE EXPERIMENT 
+#Choose subject ID, list of n-back levels, number of rounds per level, and proportion of stimuli which are repeats
 from generator import *
-exp = Exp(subj_ID = 3, n_list = [1,2], num_rounds = 10, proportion_repeats = 0.22, 
+exp = Exp(subj_ID = 1, n_list = [1,2], num_rounds = 10, proportion_repeats = 0.22, 
     im_h=300, im_w=300, stim_interval=2, stim_duration=0.5)
 practice = 1
 
