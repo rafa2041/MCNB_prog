@@ -16,10 +16,9 @@ practice = 1 #For practice mode, there will be feeback as to whether the respons
              #Set to 0 to turn off
 
 #Choose subject ID, list of n-back levels, number of rounds per level, and proportion of stimuli which are repeats
-#Note: We compensate for algorithm by using p = 0.22 instead of 0.2
 #For the real experiment,  n_list = [1,2,3], num_rounds = 50
 from generator import *
-exp = Exp(subj_ID = 1, n_list = [1,2], num_rounds = 10, proportion_repeats = 0.22, 
+exp = Exp(subj_ID = 1, n_list = [1], num_rounds = 10, proportion_repeats = 0.2, 
     im_h=300, im_w=600, stim_interval=2, stim_duration=0.5)
 
 ### CONVERT S TO NS FOR TIMING
@@ -162,7 +161,7 @@ for variation in variation_list: #Loop over letters and shapes
             exp.fullData[f'responses_{variation}s'][j,round] = space_pressed
                 
 
-                
+
 response_handler.get_events()
 screen.fill([128, 128, 128])
 goodbye_message = Text('Experiment finished! Press the space bar to quit', dest_rect=dest_rect, font_name='Helvetica', font_size=24, color=(0, 0, 0))

@@ -108,7 +108,7 @@ class Exp():
 
         return stim_sequence, repeatLocsEnd
 
-    def makeNback2(self, elements, size, n, p):
+    def makeNback2(self, input_length, size, n, p):
         '''
         INPUT PARAMETERS
         elements: any python list
@@ -121,6 +121,7 @@ class Exp():
                 stimuli selected from elements and arranged according to n-back task
         repeatLocs: list of length size. Equals 1 at locations where a repetition will occur
         '''
+        elements = range(input_length)
         numRepeats = round(p*size)
 
         result = []
@@ -131,35 +132,36 @@ class Exp():
                 raise ValueError("Not enough elements to satisfy the non-repeating condition.")
             result.append(random.choice(available_elems))
 
+        result = np.zeros(size) - 1
+
         #Randomly generate the locations which will have repeated elements
         repeatLocs = np.zeros((size))
         repeatLocsEnd = np.zeros((size))
-        indeces = np.array(random.sample(range(size-n), numRepeats))
         repeatLocs[random.sample(range(size-n), numRepeats)] = 1
         repeatLocsEnd[n:size] = repeatLocs[0:size-n]
 
         result = np.array(result)
 
         for i in range(size-n):
+            if repeatLocs[i] or repeatLocsEnd[i]: 
+                num = random.choice(elements)
+                result[i] = num
+
+        for i in range(size-n):
             if repeatLocs[i]: 
                 result[i+n] = result[i]
 
-        #In case an additional repetition was added in the process, try to remove them
-        for i in range(size-n):
-            if result[i+n] == result[i] and not(repeatLocs[i] or repeatLocsEnd[i]):
-                result[i] = elements[random.randint(0,len(elements)-1)]
+        for i in range(size):
+            if result[i] == -1:
+                allowed_numbers = [x for x in elements if (x != result[(i-n)%size] and x!= result[(i+n)%size])]
+                result[i] = random.choice(allowed_numbers)
 
-        #In case we couldn't remove it, take it into account
-        for i in range(size-n):
-            repeatLocs[i] = result[i+n] == result[i]
-            
-
-        repeatLocsEnd[n:size] = repeatLocs[0:size-n]
-        
-        return result.tolist(), repeatLocsEnd.tolist()
+        result = [int(x) for x in result]
+        repeatLocsEnd = [int(x) for x in repeatLocsEnd]
+        return result, repeatLocsEnd
 
     def generate_trials(self, n):
-        self.stim_indeces, self.stim_locs = self.makeNback(self.num_elements, self.num_rounds, n, self.proportion_repeats)
+        self.stim_indeces, self.stim_locs = self.makeNback2(self.num_elements, self.num_rounds, n, self.proportion_repeats)
 
     def save_expt(self):
         # this is how to save a pandas dict to csv
@@ -311,3 +313,66 @@ def drawPracticeRectangle(space_pressed, stim_correct, CorrectRectangle):
     if space_pressed and not stim_correct:
         CorrectRectangle.set_color([255,0,0])
         CorrectRectangle.draw()
+
+
+#some testing
+# def makeNback2(elements, size, n, p):
+#     '''
+#     INPUT PARAMETERS
+#     elements: any python list
+#     size: length of the output list
+#     n: value of the n-back task
+#     p: proportion of stimuli which will be repeated in n-back fashion
+
+#     OUTPUTS
+#     result: list of length size containing
+#             stimuli selected from elements and arranged according to n-back task
+#     repeatLocs: list of length size. Equals 1 at locations where a repetition will occur
+#     '''
+#     numRepeats = round(p*size)
+
+#     result = []
+#     # Ensure that there are no unintended repetitions
+#     for i in range(size):
+#         available_elems = [elem for elem in elements if i < n or result[i - n] != elements]
+#         if not available_elems:
+#             raise ValueError("Not enough elements to satisfy the non-repeating condition.")
+#         result.append(random.choice(available_elems))
+
+#     result = np.zeros(size) - 1
+
+#     #Randomly generate the locations which will have repeated elements
+#     repeatLocs = np.zeros((size))
+#     repeatLocsEnd = np.zeros((size))
+#     repeatLocs[random.sample(range(size-n), numRepeats)] = 1
+#     repeatLocsEnd[n:size] = repeatLocs[0:size-n]
+
+#     result = np.array(result)
+
+#     for i in range(size-n):
+#         if repeatLocs[i] or repeatLocsEnd[i]: 
+#             num = random.choice(elements)
+#             result[i] = num
+
+#     for i in range(size-n):
+#         if repeatLocs[i]: 
+#             result[i+n] = result[i]
+
+#     for i in range(size):
+#         if result[i] == -1:
+#             allowed_numbers = [x for x in elements if (x != result[(i-n)%size] and x!= result[(i+n)%size])]
+#             result[i] = random.choice(allowed_numbers)
+
+#     result = [int(x) for x in result]
+#     repeatLocsEnd = [int(x) for x in repeatLocsEnd]
+#     return result, repeatLocsEnd
+
+# a = range(9)
+# n = 3
+# p = 0.2
+# size = 20
+
+# result, locs = makeNback2(a, size, n, p)
+
+# print(result)
+# print(locs)
