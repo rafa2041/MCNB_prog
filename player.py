@@ -88,7 +88,7 @@ for variation in variation_list: #Loop over letters and shapes
 
     for j in range(len(exp.n_list)): #Loop over n = 1,2,3
         n = exp.n_list[j]
-        shape_message = Text(f'Shapes will be presented one at a time. Take note of them. If the shape on the screen is the same type and color as the one seen {n} letters before, press the spacebar. Press the spacebar to proceed.', dest_rect=dest_rect, font_name='Helvetica', font_size=24, color=(0, 0, 0))
+        shape_message = Text(f'Shapes will be presented one at a time. Take note of them. If the shape on the screen is the same type and color as the one seen {n} shapes before, press the spacebar. Press the spacebar to proceed.', dest_rect=dest_rect, font_name='Helvetica', font_size=24, color=(0, 0, 0))
         letter_message = Text(f'Letters will be presented one at a time. Take note of them. If the letter on the screen is the same as the one seen {n} letters before, press the spacebar. The case of the letter does not matter. Press the spacebar to proceed.', dest_rect=dest_rect, font_name='Helvetica', font_size=24, color=(0, 0, 0))
         if(variation == 'letter'): message = letter_message
         if(variation == 'shape'): message = shape_message
