@@ -12,13 +12,15 @@ from tachypy import (
 )
 
 ### INITIALIZE THE EXPERIMENT 
+practice = 1 #For practice mode, there will be feeback as to whether the response was correct or not. 
+             #Set to 0 to turn off
+
 #Choose subject ID, list of n-back levels, number of rounds per level, and proportion of stimuli which are repeats
+#Note: We compensate for algorithm by using p = 0.22 instead of 0.2
+#For the real experiment,  n_list = [1,2,3], num_rounds = 50
 from generator import *
 exp = Exp(subj_ID = 1, n_list = [1,2], num_rounds = 10, proportion_repeats = 0.22, 
     im_h=300, im_w=300, stim_interval=2, stim_duration=0.5)
-practice = 1 #For practice mode, there will be feeback
-
-#Note: We compensate for algorithm by using p = 0.22 instead of 0.2
 
 ### CONVERT S TO NS FOR TIMING
 stim_interval_ns = exp.stim_interval*1e9
@@ -42,6 +44,7 @@ half_ifi_s = 1/(2*frame_rate_measured)  # half the inter-frame interval in secon
 half_ifi_ns = half_ifi_s*1e9  # half the inter-frame interval in nanoseconds
 print(f'Measured frame rate: {frame_rate_measured:.2f} Hz')
 
+#Create the shapes that will be shown
 rectangle = RectangleCustom([center_x, center_y], 400, 200)
 square = RectangleCustom([center_x, center_y], 250, 250)
 triangle = EquilateralTriangle([center_x, center_y], 300, orientation = 180)
@@ -138,7 +141,6 @@ for variation in variation_list: #Loop over letters and shapes
                 response_handler.get_events()
                 if response_handler.is_key_down('space') and not space_pressed:
                     space_pressed = 1
-
 
             #inter-stimulus interval
             estimated_time = estimated_time + stim_interval_ns
