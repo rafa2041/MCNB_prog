@@ -18,7 +18,7 @@ practice = 1 #For practice mode, there will be feeback as to whether the respons
 #Choose subject ID, list of n-back levels, number of rounds per level, and proportion of stimuli which are repeats
 #For the real experiment,  n_list = [1,2,3], num_rounds = 50
 from generator import *
-exp = Exp(subj_ID = 1, n_list = [1], num_rounds = 10, proportion_repeats = 0.2, 
+exp = Exp(subj_ID = 1, n_list = [1,2,3], num_rounds = 50, proportion_repeats = 0.2, 
     im_h=300, im_w=600, stim_interval=2, stim_duration=0.5)
 
 ### CONVERT S TO NS FOR TIMING
@@ -50,8 +50,10 @@ triangle = EquilateralTriangle([center_x, center_y], 300, orientation = 180)
 
 shape_list = [rectangle, square, triangle]
 
+practice_message_loc = center_rect_on_point([0, 0, exp.im_w-1, exp.im_h-1], [center_x, center_y-300])
 CorrectRectangle = RectangleCustom([center_x, center_y-300], 100, 100)
-
+practice_message_correct = Text('Correct', dest_rect=practice_message_loc, font_name='Helvetica', font_size=40, color=(0, 240, 0))
+practice_message_wrong = Text('Incorrect', dest_rect=practice_message_loc, font_name='Helvetica', font_size=40, color=(240, 0, 0))
 
 ### LOAD UP STUFF WE WANT TO SHOW ON SCREEN
 fixation_cross = FixationCross(center=[center_x, center_y], half_width=10, half_height=10, thickness=5.0, color=(0, 0, 0))
@@ -133,7 +135,7 @@ for variation in variation_list: #Loop over letters and shapes
             while time.monotonic_ns() < estimated_time - half_ifi_ns:
                 screen.fill([128, 128, 128])
                 display.draw()
-                if practice: drawPracticeRectangle(space_pressed, exp.stim_locs[round], CorrectRectangle)
+                if practice: drawPracticeMessage(space_pressed, exp.stim_locs[round], practice_message_correct, practice_message_wrong)
 
                 true_time = screen.flip()
 
@@ -148,7 +150,7 @@ for variation in variation_list: #Loop over letters and shapes
             while time.monotonic_ns() < estimated_time - half_ifi_ns:
                 screen.fill([128, 128, 128])
                 fixation_cross.draw()
-                if practice: drawPracticeRectangle(space_pressed, exp.stim_locs[round], CorrectRectangle)
+                if practice: drawPracticeMessage(space_pressed, exp.stim_locs[round], practice_message_correct, practice_message_wrong)
                 
                 response_handler.get_events()
                 if response_handler.is_key_down('escape'):

@@ -304,6 +304,12 @@ def drawPracticeRectangle(space_pressed, stim_correct, CorrectRectangle):
         CorrectRectangle.set_color([255,0,0])
         CorrectRectangle.draw()
 
+def drawPracticeMessage(space_pressed, stim_correct, correct_mess, wrong_mess):
+    if space_pressed and stim_correct:
+        correct_mess.draw()
+    if space_pressed and not stim_correct:
+        wrong_mess.draw()
+
 
 
 # #some testing
